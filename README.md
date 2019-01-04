@@ -6,12 +6,6 @@ This library was written exclusively by me for the needs of projects. In each pr
 
 Second option in this library is to save them to file. In the event of server problems, users can find this file on their phone and send it to us for verification purposes.
 
-## How it works
-
-1. MagicLogs use own modified `Thread.UncaughtExceptionHandler` to catch unhandled exceptions and `MagicLogsTree` to capture logs from `Timber` 
-2. Exception with some addiotional informations are stored in local `Room Persistance Library` . And saved to file, if enabled
-3.  `SendLogJob` is scheduled. And logs are sent when network is available.
-
 ## Timber logger support
 
 Also, this library supports [Timber](https://github.com/JakeWharton/timber) logger by Jake Wharton. Developer can plant modified TimberTree in Jake's library.
@@ -27,6 +21,52 @@ And use Timber library to send information about each handled non-critic excepti
 //Each log logged by `Timber.e` will be send to server or saved in file
 Timber.e(RuntimeException("FatalException"))
 ```
+
+## Usage
+
+Initialize `MagicLogs` library before you use it. It can be done in your `Application` class.
+
+```kotlin
+class MyApplication: Application() {
+    override fun onCreate() {
+        super.onCreate()
+        
+        //add AndroidThreeTen implementation in gradle and init it
+        AndroidThreeTen.init(this)
+        //create builder of MagicLogs and set properties
+        val magiclogs = MagicLogs.Builder()
+                .context(applicationContext)
+                .user("sample.user@external.engie.com")
+                .apiUrl(BuildConfig.API_URL)
+                .appVersionName(BuildConfig.APP_VERSION)
+                .logsTokenProvider(logsAccessTokenProvider)
+                .options(MagicLogsOptions.OPTION_SERVER_LOGS or MagicLogsOptions.OPTION_FILE_LOGS)
+                .build()
+
+        //init MagicLogs
+        magiclogs.init()
+        
+        //(optional) plant Timber tree with MagicLogs
+        Timber.plant(MagicLogsTree(applicationContext))
+    }
+}
+```
+
+Starting from now, all crashes of application will be caught by `MagicLogs` sent to server and saved to file.
+
+If you planted TimberTree, information will be sent/saved every time you use `Timber.e()` 
+
+```kotlin
+Timber.e(RuntimeException("FatalException"))
+```
+
+
+
+## How it works
+
+1. MagicLogs use own modified `Thread.UncaughtExceptionHandler` to catch unhandled exceptions and `MagicLogsTree` to capture logs from `Timber` 
+2. Exception with some addiotional informations are stored in local `Room Persistance Library` . And saved to file, if enabled
+3.  `SendLogJob` is scheduled. And logs are sent when network is available.
 
 ## Used libraries
 
