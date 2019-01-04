@@ -18,7 +18,7 @@ import timber.log.Timber
  * @logsTokenProvider: LogsTokenProvider - provider of logs, should return token, which is String (required)
  * @apiUrl: String - base url, which app uses to connect with API, in BuildConfig of app (required)
  * @appVersionName: String - version of mobile app, in BuildConfig of app (required)
- * @options: Int - flags: OPTION_SERVER_LOGS allows to send log on web (endpoint: https://lorin-dev.engie.com/api/Sync/MobileDiagnostic)
+ * @options: Int - flags: OPTION_SERVER_LOGS allows to send log on web (endpoint: https://some-server.com/api/Sync/MobileDiagnostic)
  *                          OPTION_FILE_LOGS allows to save log in storage (path: .android/sample/Logs/crash$datetime.txt or .android/sample/Logs/errors.txt)
  * In gradle add implementation of Timber and AndroidThreeTen.
  */
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         //create builder of MagicLogs and set properties
         val magiclogs = MagicLogs.Builder()
                 .context(applicationContext)
-                .user("sample.user@external.engie.com")
+                .user("sample.user@sample.com")
                 .apiUrl(BuildConfig.API_URL)
                 .appVersionName(BuildConfig.APP_VERSION)
                 .logsTokenProvider(logsAccessTokenProvider)

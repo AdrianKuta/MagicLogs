@@ -15,8 +15,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        archivesBaseName = "dream-${versionName}-${versionCode}"
-        buildConfigField "String", apiUrl, "\"https://lorin-dev.engie.com/api/\""
+        archivesBaseName = "app-${versionName}-${versionCode}"
+        buildConfigField "String", apiUrl, "\"https://some-server.com/api/\""
         buildConfigField "String", appVersion, "\"${versionName}-DEV-SAMPLE\""
     }
     buildTypes {
